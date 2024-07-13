@@ -10,7 +10,55 @@
     <header>
         <h1>Ethereal Echoes</h1>
     </header>
-    <main></main>
+    <main>
+
+        <section id="sound-canvas">
+            <h2>Sound Canvas</h2>
+            <div class="canvas-placeholder">
+                Sound Canvas Placeholder
+            </div>
+        </section>
+
+        <section id="controls">
+            <div id="symbol-library">
+                <h2>Symbol Library</h2>
+                <div class="symbols">
+                    <button class="symbol">S1</button>
+                    <button class="symbol">S2</button>
+                    <button class="symbol">S3</button>
+                    <button class="symbol">S4</button>
+                </div>
+            </div>
+
+            <div>
+                <h2>Sound Controls</h2>
+                <div class="control">
+                    <label for="pitch">Pitch</label>
+                    <input type="range" id="pitch" min="0" max="100" value="50">
+                </div>
+                <div class="control">
+                    <label for="volume">Volume</label>
+                    <input type="range" id="volume" min="0" max="100" value="50">
+                </div>
+                <div class="control">
+                    <label for="reverb">Reverb</label>
+                    <input type="range" id="reverb" min="0" max="100" value="50">
+                </div>
+            </div>
+        </section>
+
+        <section id="meditation-mode">
+            <h2>Meditation Mode</h2>
+            <button id="start-meditation">Start</button>
+            <label for="duration">Duration:</label>
+            <select id="duration">
+                <option value="5"> 5 min</option>
+                <option value="10">10 min</option>
+                <option value="15">15 min</option>
+            </select>
+        </section>
+
+    </main>
     <footer></footer>
     <script src="js/script.js"></script>
 </body>
