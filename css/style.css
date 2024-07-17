@@ -25,14 +25,35 @@ main {
 }
 
 #sound-canvas {
+    position: relative;
     background-color: #ecf0f1;
     border: 2px solid #34495e;
     border-radius: 8px;
     height: 300px;
+    margin-bottom: 2rem;
+    overflow: hidden; /* This will ensure dots don't appear outside the border */
+}
+
+.canvas-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 2rem;
+    pointer-events: none; /* This allows clicks to pass through to the canvas */
+}
+
+.sound-dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #3698db;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%); /* Center the dot on the cursor */
 }
 
 #controls {
@@ -68,6 +89,10 @@ h2 {
     cursor: pointer;
     color: #fff;
     font-weight: bold;
+}
+
+.symbol.active {
+    background-color: #e74c3c;
 }
 
 .control {
