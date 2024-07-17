@@ -33,15 +33,15 @@
             <div id="sound-controls">
                 <h2>Sound Controls</h2>
                 <div class="control">
-                    <label for="pitch">Pitch</label>
+                    <label for="pitch">Pitch: <span id = "pitch-value">50</span></label>
                     <input type="range" id="pitch" min="0" max="100" value="50">
                 </div>
                 <div class="control">
-                    <label for="volume">Volume</label>
+                    <label for="volume">Volume: <span id = "volume-value">50</span></label>
                     <input type="range" id="volume" min="0" max="100" value="50">
                 </div>
                 <div class="control">
-                    <label for="reverb">Reverb</label>
+                    <label for="reverb">Reverb: <span id = "reverb-value">50</span></label>
                     <input type="range" id="reverb" min="0" max="100" value="50">
                 </div>
             </div>
@@ -56,6 +56,7 @@
                 <option value="10">10 min</option>
                 <option value="15">15 min</option>
             </select>
+            <div id="remaining-time"></div>
         </section>
     </main>
 
