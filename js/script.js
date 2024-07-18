@@ -50,14 +50,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Sound Controls
     // This section handles the sound parameter adjustments
+    // 2024-07-17 Update Sound Controls event listener
     const soundControls = document.querySelectorAll('#sound-controls input');
     soundControls.forEach(control => {
         control.addEventListener('input', () => {
-            const value = control.value;
+            const value = parseInt(control.value);
             const controlName = control.id;
+            console.log(`${controlName}: ${value}`);
             // Log the changed value (for now)
             // In the future, this will actually modify the sound
-            console.log(`${control.id}: ${control.value}`);
+            // UPDATE the display of the current value
 
             // Update the display of the current value
             const displayElement = document.getElementById(`${controlName}-value`);
@@ -66,15 +68,32 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Here you would typically call a function to update the sound
-            // updateSound(controlName, value);
+            updateSound(controlName, value);
         });
     });
 
     
     // Placeholder for sound update function
+    // 2024-07-17 Update the updateSound function
     function updateSound(controlName, value) {
-        // This function will be implemented when we add Web Audio API
-        console.log(`Updating ${controlName} to ${value}`);
+        if (!audioContext) initAudio();
+
+        switch(controlName) {
+            case 'pitch':
+                // Map 0-100 to 220-880 Hz (A3 to A5)
+                const frequency = 220 * Math.pow(2, value / 50);
+                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                break;
+            case 'volume':
+                // Map 0-100 to 0-1 for volume
+                gainNode.gain.setValueAtTime(value / 100, audioContext.currentTime);
+                break;
+            case 'reverb':
+                // We'll implement a simple delay for 'reverb'
+                // This is a placeholder and not true reverb
+                console.log('Reverb not yet implemented');
+                break;
+        }
     }
 
 
@@ -107,6 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     stopMeditation();
                 }
             }, 1000);
+            // Adding sound to the start and stop meditation functions
+            startMeditationSound();
         }
 
         // Here you would typically start the meditation sound
@@ -130,17 +151,52 @@ document.addEventListener('DOMContentLoaded', () => {
         duration.disabled = false;
         document.getElementById('remaining-time').textContent = '';console.log('Meditation stopped');
         // Here you would typically stop the meditation sound
-        // stopMeditationSound();
+        stopMeditationSound();
     }
 
     // Placeholder for meditation sound functions
+    // 2024-07-17 Update "Meditation Mode" functions
     function startMeditationSound() {
+        if (!audioContext) initAudio();
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime); // Set to a calming volume
+        oscillator.frequency.setValueAtTime(256, audioContext.currentTime); // Set to a calming frequency (C4)
         console.log('Starting meditation sound');
     }
 
     function stopMeditationSound() {
+        if (audioContext) {
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+        }
         console.log('Stopping meditation sound');
     }
+
+
+    // This adds interactivity to the start audio button
+    document.getElementById('start-audio').addEventListener('click', function() {
+        initAudio();
+        this.disabled = true;
+        this.textContent = 'Audio Started';
+    });
     
     
+    // Web Audio API setup
+    let audioContext;
+    let oscillator;
+    let gainNode;
+
+    // Function to initialize audio context
+    function initAudio() {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        oscillator = audioContext.createOscillator();
+        gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.type = 'sine'; // Start with a sine wave
+        oscillator.frequency.setValueAtTime(440, audioContext.currentTime); // Start at 440Hz (A4)
+        gainNode.gain.setValueAtTime(0.5, audioContext.currentTime); // Set initial volume to 50%
+
+        oscillator.start();
+    }
 });
