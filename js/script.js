@@ -1,5 +1,5 @@
 // ********************************************************************************
-// John Quiruz, 2023-07-23, For personal practice, Ethereal Echoes
+// John Quiruz, 2024-07-23, For personal practice, Ethereal Echoes
 //
 // This project aims to create an immersive audio-visual web application that 
 // allows users to interact with sound in a unique and intuitive way. The core 
@@ -103,52 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Call function to update the sound based on the control change
             updateSound(controlName, value);
         });
-    });
-
-    
-    
-    // MEDITATION MODE
-    // ****************************************************************************
-
-    // Get reference to the start meditation button and duration select
-    const startMeditation = document.getElementById('start-meditation');
-    const duration = document.getElementById('duration');
-    let meditationInterval;
-    
-    // Add click event listener to the start meditation button
-    startMeditation.addEventListener('click', () => {
-        if (startMeditation.textContent === 'Start'){
-            // Start meditation
-            const durationInMinutes = parseInt(duration.value);
-            
-            // Log the meditation duration (placeholder for future functionality)
-            console.log(`Starting meditation for ${durationInMinutes} minutes`);
-            // Change button text to indicate active state
-            startMeditation.textContent = 'Stop';
-            // Disable duration select while meditation is active
-            duration.disabled = true;
-            
-            // Calculate total seconds for meditation
-            let remainingTime = durationInMinutes * 60;
-            updateRemainingTime(remainingTime);
-            
-            // Set interval to update remaining time every second
-            meditationInterval = setInterval(() => {
-                remainingTime--;
-                updateRemainingTime(remainingTime);
-                
-                // Stop meditation when time runs out
-                if (remainingTime <= 0) {
-                    stopMeditation();
-                }
-            }, 1000);
-
-            // Start the meditation sound
-            startMeditationSound();
-        } else {
-            // Stop meditation if button is clicked while active
-            stopMeditation();
-        }
     });
     
     
@@ -270,55 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // If it exists, stops the audio
             audioContext.suspend();
         }
-    }
-    
-    
-    // Function to stop meditation sound
-    function stopMeditationSound() {
-        if (audioContext) {
-            // Set volume to 0 to stop the sound
-            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-        }
-        console.log('Stopping meditation sound');
-    }
-    
-    
-    // Function to start meditation sound
-    function startMeditationSound() {
-        if (!audioContext) initAudio();
-        // Set to a calming volume
-        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-        // Set to a calming frequency (C4 piano key)
-        oscillator.frequency.setValueAtTime(256, audioContext.currentTime);
-        console.log('Starting meditation sound');
-    }
-    
-
-    // Function to update the displayed remaining time for meditation
-    function updateRemainingTime(seconds) {
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        // Formate time as MM:SS
-        const timeString = 
-            `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-        document.getElementById('remaining-time').textContent = timeString;
-    }
-    
-    
-    // Function to stop meditation sound
-    function stopMeditation() {
-        // Clear the interval that was updating the time
-        clearInterval(meditationInterval);
-        // Reset button text
-        startMeditation.textContent = 'Start';
-        // Re-enable duration select
-        duration.disabled = false;
-        // Clear displayed remaining time
-        document.getElementById('remaining-time').textContent = '';
-        console.log('Meditation stopped');
-    
-        // Stop the meditation sound
-        stopMeditationSound();
     }
     
     
